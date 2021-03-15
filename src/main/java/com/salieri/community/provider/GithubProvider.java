@@ -15,6 +15,7 @@ public class GithubProvider {
     // 获得AccessToken
     public String getAccessToken(AccessTokenDTO accessTokenDTO) {
 
+        // proxy
         System.setProperty("https.proxySet", "true");
         System.setProperty("https.proxyHost", "127.0.0.1");
         System.setProperty("https.proxyPort", "7890");
@@ -42,6 +43,7 @@ public class GithubProvider {
     // 根据AccessToken获取user信息
     public GithubUser getUser(String accessToken) {
 
+        //proxy
         System.setProperty("https.proxySet", "true");
         System.setProperty("https.proxyHost", "127.0.0.1");
         System.setProperty("https.proxyPort", "7890");
@@ -57,7 +59,7 @@ public class GithubProvider {
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class); //json转换成类
             return githubUser;
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         return null;
     }
