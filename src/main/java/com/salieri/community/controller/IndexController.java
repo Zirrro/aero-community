@@ -39,7 +39,7 @@ public class IndexController {
                 }
             }
         }
-
+        // 返回主页前将question写入model
         List<QuestionDTO> questionList = questionService.list();
         model.addAttribute("questions",questionList);
         return "index";
