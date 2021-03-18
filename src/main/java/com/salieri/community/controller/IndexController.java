@@ -1,5 +1,6 @@
 package com.salieri.community.controller;
 
+import com.salieri.community.dto.PaginationDTO;
 import com.salieri.community.dto.QuestionDTO;
 import com.salieri.community.mapper.UserMapper;
 import com.salieri.community.model.User;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,9 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Cookie[] cookies = request.getCookies();
         // 获取用户
         if (cookies != null) {
@@ -40,8 +44,8 @@ public class IndexController {
             }
         }
         // 返回主页前将question写入model
-        List<QuestionDTO> questionList = questionService.list();
-        model.addAttribute("questions",questionList);
+        PaginationDTO pagination = questionService.list(page,size);
+        model.addAttribute("pagination", pagination);
         return "index";
     }
 }
