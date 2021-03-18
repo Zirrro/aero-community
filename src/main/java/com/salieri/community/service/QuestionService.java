@@ -28,6 +28,7 @@ public class QuestionService {
         Integer totalCount = questionMapper.count();
         paginationDTO.setPagination(totalCount, page, size);
 
+        // 防止错误页面判断
         if (page < 1) {
             page = 1;
         }
