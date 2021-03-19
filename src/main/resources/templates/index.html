@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cn" xmlns:th="http://www.thyleaf.org">
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Aero community</title>
@@ -25,7 +25,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}">Media heading</h4>
+                    <h4 class="media-heading" th:text="${question.title}"></h4>
                     <span th:text="${question.description}"></span><br>
                     <span class="text-desc"><span th:text="${question.commentCount}"></span>个回复 <span
                             th:text="${question.viewCount}"></span>浏览 <span
