@@ -10,7 +10,8 @@ create table user
     name         varchar(50)  null,
     token        char(36)     null,
     gmt_create   bigint       null,
-    gmt_modified bigint       null
+    gmt_modified bigint       null,
+    avatar_url   varchar(100) null
 );
 ```
 
@@ -25,9 +26,9 @@ create table question
     gmt_create    bigint        null,
     gmt_modified  bigint        null,
     creator       int           null,
-    comment_count int default 0 ,
-    view_count    int default 0 ,
-    like_count    int default 0 ,
+    comment_count int default 0 null,
+    view_count    int default 0 null,
+    like_count    int default 0 null,
     tag           varchar(256)  null
 );
 ```
