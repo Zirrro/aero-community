@@ -5,6 +5,7 @@ import com.salieri.community.dto.GithubUser;
 import com.salieri.community.mapper.UserMapper;
 import com.salieri.community.model.User;
 import com.salieri.community.provider.GithubProvider;
+import com.salieri.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,12 +33,11 @@ public class AuthorizeController {
     private String redirect_uri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request,
                            HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
@@ -56,22 +56,26 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatar_url());
             // 存入数据库中
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             // token放入cookie中
             response.addCookie(new Cookie("token",token));
-            // 写 session和cookie
-
-
-
-            request.getSession().setAttribute("githubUser",githubUser); //user对象放入session中
             return "redirect:/";
         } else {
             // 登录失败, 重新登录
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        // 删除cookie
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }
