@@ -10,8 +10,6 @@ class CommunityApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(System.currentTimeMillis());
-        System.out.println(UUID.randomUUID());
     }
 
 }

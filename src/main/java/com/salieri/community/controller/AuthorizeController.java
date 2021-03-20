@@ -2,7 +2,6 @@ package com.salieri.community.controller;
 
 import com.salieri.community.dto.AccessTokenDTO;
 import com.salieri.community.dto.GithubUser;
-import com.salieri.community.mapper.UserMapper;
 import com.salieri.community.model.User;
 import com.salieri.community.provider.GithubProvider;
 import com.salieri.community.service.UserService;
@@ -23,6 +22,9 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${github.client.id}")
     private String client_id;
 
@@ -31,9 +33,6 @@ public class AuthorizeController {
 
     @Value("${github.redirect.uri}")
     private String redirect_uri;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,

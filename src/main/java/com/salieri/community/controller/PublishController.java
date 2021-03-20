@@ -1,12 +1,14 @@
 package com.salieri.community.controller;
 
-import com.salieri.community.mapper.QuestionMapper;
+import com.salieri.community.dto.QuestionDTO;
 import com.salieri.community.model.Question;
 import com.salieri.community.model.User;
+import com.salieri.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,7 +18,18 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model) {
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")
     public String publish() {
@@ -29,20 +42,21 @@ public class PublishController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "id", required = false) Integer id,
             HttpServletRequest request,
             Model model) {
 
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
 
         if (title == null || title.equals("")) {
-            model.addAttribute("error","标题不能为空");
+            model.addAttribute("error", "标题不能为空");
             return "publish";
         }
 
         if (description == null || description.equals("")) {
-            model.addAttribute("error","描述不能为空");
+            model.addAttribute("error", "描述不能为空");
             return "publish";
         }
 
@@ -53,7 +67,7 @@ public class PublishController {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            model.addAttribute("error","用户未登录");
+            model.addAttribute("error", "用户未登录");
             return "publish";
         }
 
@@ -62,10 +76,9 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
+        question.setId(id);
         // 发布成功
-        questionMapper.create(question);
+        questionService.createOrUpdate(question);// id可为空，在service中判断
         return "redirect:/";
     }
 }
