@@ -15,5 +15,5 @@ public class QuestionDTO {
     private Integer commentCount;
     private Integer viewCount;
     private Integer likeCount;
-    private User user;
+    private User user; //包含发布用户的信息
 }

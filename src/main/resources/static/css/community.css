@@ -26,3 +26,13 @@ body{
 .profile .section{
     margin-top: 20px;
 }
+
+.community-menu {
+    color: #999999;
+}
+
+.avatar-id {
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
