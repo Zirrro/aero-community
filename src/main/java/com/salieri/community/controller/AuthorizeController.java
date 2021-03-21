@@ -22,47 +22,42 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
-    @Autowired
-    private UserService userService;
-
     @Value("${github.client.id}")
-    private String client_id;
+    private String clientId;
 
     @Value("${github.client.secret}")
-    private String client_secret;
+    private String clientSecret;
 
     @Value("${github.redirect.uri}")
-    private String redirect_uri;
+    private String redirectUri;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirectUri(redirect_uri);
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
-        accessTokenDTO.setClientId(client_id);
-        accessTokenDTO.setClientSecret(client_secret);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if (githubUser != null){
-            // 登录成功
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
-            // 生成token
             String token = UUID.randomUUID().toString();
-            // 信息放入User对象中
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setAvatarUrl(githubUser.getAvatar_url());
-            // 存入数据库中
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userService.createOrUpdate(user);
-            // token放入cookie中
-            response.addCookie(new Cookie("token",token));
+            response.addCookie(new Cookie("token", token));
             return "redirect:/";
         } else {
-            // 登录失败, 重新登录
+            // 登录失败，重新登录
             return "redirect:/";
         }
     }
@@ -71,7 +66,6 @@ public class AuthorizeController {
     public String logout(HttpServletRequest request,
                          HttpServletResponse response) {
         request.getSession().removeAttribute("user");
-        // 删除cookie
         Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
