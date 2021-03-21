@@ -32,3 +32,7 @@ create table question
     tag           varchar(256)  null
 );
 ```
+
+```
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+```
