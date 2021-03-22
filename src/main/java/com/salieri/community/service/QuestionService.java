@@ -2,6 +2,8 @@ package com.salieri.community.service;
 
 import com.salieri.community.dto.PaginationDTO;
 import com.salieri.community.dto.QuestionDTO;
+import com.salieri.community.exception.CustomizeErrorCode;
+import com.salieri.community.exception.CustomizeException;
 import com.salieri.community.mapper.QuestionMapper;
 import com.salieri.community.mapper.UserMapper;
 import com.salieri.community.model.Question;
@@ -119,6 +121,9 @@ public class QuestionService {
     public QuestionDTO getById(Integer id) {
         // 使用service调用mapper
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_MOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);  //question复制给dto
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -143,7 +148,10 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria()
                     .andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_MOT_FOUND);
+            }
         }
     }
 }
