@@ -4,6 +4,7 @@ import com.salieri.community.dto.PaginationDTO;
 import com.salieri.community.dto.QuestionDTO;
 import com.salieri.community.exception.CustomizeErrorCode;
 import com.salieri.community.exception.CustomizeException;
+import com.salieri.community.mapper.QuestionExtMapper;
 import com.salieri.community.mapper.QuestionMapper;
 import com.salieri.community.mapper.UserMapper;
 import com.salieri.community.model.Question;
@@ -25,6 +26,9 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
 
@@ -153,5 +157,12 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_MOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
