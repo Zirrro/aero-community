@@ -6,4 +6,5 @@ package com.salieri.community.exception;
  */
 public interface ICustomizeErrorCode {
     String getMessage();
+    Integer getCode();
 }

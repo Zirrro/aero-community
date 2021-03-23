@@ -33,6 +33,7 @@
 
         <table schema="community" tableName="user" domainObjectName="User"/>
         <table schema="community" tableName="question" domainObjectName="Question"/>
+        <table schema="community" tableName="comment" domainObjectName="Comment"/>
 
     </context>
 </generatorConfiguration>
