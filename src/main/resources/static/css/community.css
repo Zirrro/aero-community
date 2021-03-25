@@ -1,29 +1,29 @@
-body{
+body {
     background-color: #efefef;
 }
 
-.main{
+.main {
     background-color: white;
     margin: 30px;
 }
 
-.btn-publish{
+.btn-publish {
     float: right;
     margin-bottom: 15px;
 }
 
-.media-object{
+.media-object {
     width: 60px;
     height: 60px;
 }
 
-.text-desc{
+.text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999999;
 }
 
-.profile .section{
+.profile .section {
     margin-top: 20px;
 }
 
@@ -35,6 +35,7 @@ body{
     display: flex;
     align-items: center;
     height: 60px;
+    font-size: 16px;
 }
 
 .jumbotron {
@@ -45,8 +46,30 @@ body{
     display: flex;
     align-items: center;
     height: 40px;
+    font-size: 16px;
 }
 
 .comment {
     margin: 10px 0 10px 0;
+}
+
+.menu {
+    margin-top: 10px;
+    color: #999999;
+}
+
+.menu .icon {
+    margin-right: 10px;
+    color: #999999;
+    cursor: pointer;
+}
+
+.menu .icon:hover {
+    color: #499ef3;
+}
+
+.comments {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 15px;
 }

@@ -11,11 +11,12 @@
     <script src="/js/community.js" type="application/javascript"></script>
 </head>
 <body>
-
+<!--导航栏-->
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main profile">
     <div class="row">
         <!-- 左 -->
+        <!--正文-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h3><span th:text="${question.title}"></span></h3>
@@ -32,6 +33,33 @@
                     <span class="glyphicon glyphicon-pencil"></span>编辑
                 </a>
             </div>
+            <!--回复框-->
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!-- 回复 -->
+            <h4><span th:text="${question.commentCount}"></span>个回复</h4>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 0">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" th:each="comment:${comments}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded"
+                                 th:src="${comment.user.avatarUrl}"
+                                 style="height: 40px;width: 40px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <span th:text="${comment.user.name}" class="reply-id"></span>
+                        </h5>
+                        <div th:text="${comment.content}"></div>
+                        <div class="menu">
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
                 <div class="media">
@@ -39,7 +67,7 @@
                         <a href="#">
                             <img class="media-object img-rounded"
                                  th:src="${question.user.avatarUrl}"
-                                 style="height: 40px;width: 40px">
+                                 style="height: 40px; width: 40px">
                         </a>
                     </div>
                     <div class="media-body">
