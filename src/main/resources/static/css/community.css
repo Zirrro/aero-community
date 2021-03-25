@@ -40,3 +40,13 @@ body{
 .jumbotron {
     margin: 50px;
 }
+
+.reply-id {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.comment {
+    margin: 10px 0 10px 0;
+}

@@ -10,6 +10,7 @@ import com.salieri.community.model.Comment;
 import com.salieri.community.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Salieri
@@ -27,6 +28,7 @@ public class CommentService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
+    @Transactional //Describes a transaction attribute on an individual method or on a class. 整个方法为一个事务，若抛出异常则全部回滚
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
